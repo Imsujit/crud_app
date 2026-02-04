@@ -1,5 +1,6 @@
 package com.nsgacademy.crudapp.utils;
 
+import com.nsgacademy.crudapp.exception.DAOException;
 import com.sun.jdi.ClassNotLoadedException;
 
 import java.sql.Connection;
@@ -7,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class JDBCUtils {
-    private static final String URL = "jdbc:postgresql://localhost/crudapp";
+    private static final String URL = "jdbc:postgresql://localhost:5432/crudapp";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "password";
 
@@ -15,7 +16,7 @@ public class JDBCUtils {
         try{
             Class.forName("org.postgresql.Driver");
         }catch(ClassNotFoundException e){
-            System.out.println(e.getMessage());
+            throw new DAOException("Unable to load driver");
         }
     }
 
