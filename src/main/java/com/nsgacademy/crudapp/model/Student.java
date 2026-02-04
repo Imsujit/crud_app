@@ -6,6 +6,9 @@ public class Student {
     private String email;
     private String mobile;
 
+    public Student() {
+    }
+
     public Student(int id, String name, String email, String mobile) {
         this.id = id;
         this.name = name;
@@ -49,5 +52,15 @@ public class Student {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                '}';
     }
 }
