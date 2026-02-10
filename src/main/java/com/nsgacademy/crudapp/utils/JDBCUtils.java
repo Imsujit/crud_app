@@ -2,7 +2,6 @@ package com.nsgacademy.crudapp.utils;
 
 import com.nsgacademy.crudapp.exception.DAOException;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
