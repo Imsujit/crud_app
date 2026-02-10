@@ -1,7 +1,7 @@
 package com.nsgacademy.crudapp.utils;
 
 import com.nsgacademy.crudapp.exception.DAOException;
-import com.sun.jdi.ClassNotLoadedException;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
