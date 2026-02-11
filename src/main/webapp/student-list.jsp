@@ -7,6 +7,15 @@
         <h2>MVC CRUD APPLICATION</h2>
         <h5>JSP + SERVLET + JDBC</H5>
 
+        <%
+            String success = request.getParameter("success");
+            if(success!=null){
+        %>
+            <p style='color:green;'><%= success%></p>
+        <%
+            }
+        %>
+
         <table border= "1" cellpadding= "5">
         <a href="student?action=add">Add Student</a>
             <thead>
@@ -33,7 +42,7 @@
                             <td><%=s.getMobile()%></td>
                             <td>
                                 <a href="student?action=edit">UPDATE</a>
-                                <a href="student?action=delete">DELETE</a>
+                                <a href="student?action=delete&id=<%=s.getId()%>" onClick="return confirm('are you sure?')">DELETE</a>
                             </td>
                         </tr>
             <%
