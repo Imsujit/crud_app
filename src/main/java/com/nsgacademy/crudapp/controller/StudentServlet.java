@@ -34,7 +34,7 @@ public class StudentServlet extends HttpServlet {
             switch(action){
                 case "add":
                     break;
-                case "delete":
+                case "delete": deleteStudent(req,resp);
                     break;
                 case "edit":
                     break;
@@ -45,7 +45,10 @@ public class StudentServlet extends HttpServlet {
                 default: getStudentsList(req,resp);
             }
         }catch (DAOException e){
-            throw new DAOException(e);
+            req.setAttribute("errorMessage",e.getMessage());
+            req.setAttribute("cause",e.getCause());
+            req.setAttribute("exception",e);
+            req.getRequestDispatcher("error.jsp").forward(req,resp);
         }
     }
 
@@ -53,5 +56,11 @@ public class StudentServlet extends HttpServlet {
         List<Student> studentsList = studentDao.getAllStudents();
         req.setAttribute("students",studentsList);
         req.getRequestDispatcher("student-list.jsp").forward(req,resp);
+    }
+
+    private void deleteStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        int id = Integer.parseInt(req.getParameter("id"));
+        studentDao.delete(id);
+        resp.sendRedirect("student?action=list&success=Deleted Successfully!");
     }
 }
