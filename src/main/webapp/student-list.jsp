@@ -5,7 +5,7 @@
     </head>
     <body>
         <h2>MVC CRUD APPLICATION</h2>
-        <h5>JSP + SERVLET + JDBC</H5>
+        <h5>SERVLET + JSP + JDBC</H5>
 
         <%
             String success = request.getParameter("success");
@@ -41,8 +41,8 @@
                             <td><%=s.getEmail()%></td>
                             <td><%=s.getMobile()%></td>
                             <td>
-                                <a href="student?action=edit">UPDATE</a>
-                                <a href="student?action=delete&id=<%=s.getId()%>" onClick="return confirm('are you sure?')">DELETE</a>
+                                <a href="student?action=edit&id=<%=s.getId()%>">Edit</a>
+                                <a href="student?action=delete&id=<%=s.getId()%>" onClick="return confirm('are you sure?')">Delete</a>
                             </td>
                         </tr>
             <%
