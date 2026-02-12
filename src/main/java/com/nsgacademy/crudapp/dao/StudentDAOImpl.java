@@ -64,9 +64,9 @@ public class StudentDAOImpl implements StudentDAO {
             PreparedStatement psgetstudent = con.prepareStatement(GET_STUDENT_SQL)){
             psgetstudent.setInt(1,id);
 
-            try(ResultSet rs = psgetstudent.executeQuery(GET_STUDENT_SQL)){
+            try(ResultSet rs = psgetstudent.executeQuery()){
                 if(rs.next()){
-                    student = new Student(rs.getString("name"),rs.getString("email"),rs.getString("mobile"));
+                    student = new Student(rs.getInt("id"),rs.getString("name"),rs.getString("email"),rs.getString("mobile"));
                 }
             }
         }catch(Exception e){
