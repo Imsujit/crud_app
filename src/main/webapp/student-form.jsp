@@ -55,9 +55,16 @@
                     <label class="form-label">Name</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user text-secondary"></i></span>
+
                         <input type="text" name="name" class="form-control"
-                               value="<%= (isEdit ? student.getName() : "") %>"
-                               placeholder="Enter student name" >
+                               value="<%= (request.getParameter("name")!=null) ? request.getParameter("name") : (isEdit ? student.getName() : "") %>"
+                               placeholder="Enter student name"
+                               required
+                               pattern="[A-Za-z ]{3,50}"
+                               title="Name should be at least 3 to 50 characters">
+
+                        <%String nameError = (String)request.getAttribute("nameError");%>
+                        <p class="text-danger"><%= (nameError != null ? nameError : "")%></p>
                     </div>
                 </div>
 
@@ -65,9 +72,14 @@
                     <label class="form-label">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-envelope text-secondary"></i></span>
+
                         <input type="email" name="email" class="form-control"
-                               value="<%= (isEdit ? student.getEmail() : "") %>"
-                               placeholder="example@mail.com" >
+                            value="<%=(request.getParameter("email")!=null) ? request.getParameter("email") : (isEdit ? student.getEmail() : "") %>"
+                            placeholder="example@mail.com"
+                            required>
+
+                        <%String emailError = (String)request.getAttribute("emailError");%>
+                        <p class="text-danger"><%= (emailError != null ? emailError : "")%></p>
                     </div>
                 </div>
 
@@ -75,9 +87,16 @@
                     <label class="form-label">Mobile Number</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-phone text-secondary"></i></span>
+
                         <input type="text" name="mobile" class="form-control"
-                               value="<%= (isEdit ? student.getMobile() : "") %>"
-                               placeholder="Enter mobile number" >
+                            value="<%= (request.getParameter("mobile")!=null) ? request.getParameter("mobile") : (isEdit ? student.getMobile() : "") %>"
+                            placeholder="Enter mobile number"
+                            required
+                            pattern="[0-9]{10}"
+                            title="Mobile Number should be of 10 digits">
+
+                        <%String mobileError = (String)request.getAttribute("mobileError");%>
+                        <p class="text-danger"><%= (mobileError != null ? mobileError : "")%></p>
                     </div>
                 </div>
 
