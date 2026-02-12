@@ -32,15 +32,15 @@ public class StudentServlet extends HttpServlet {
 
         try{
             switch(action){
-                case "add":
+                case "add": showNewForm(req,resp);
                     break;
                 case "delete": deleteStudent(req,resp);
                     break;
-                case "edit":
+                case "edit": showEditForm(req,resp);
                     break;
-                case "insert":
+                case "insert": insertStudent(req,resp);
                     break;
-                case "update":
+                case "update": updateStudent(req,resp);
                     break;
                 default: getStudentsList(req,resp);
             }
@@ -62,5 +62,35 @@ public class StudentServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         studentDao.delete(id);
         resp.sendRedirect("student?action=list&success=Deleted Successfully!");
+    }
+
+    private void showNewForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        req.getRequestDispatcher("student-form.jsp").forward(req,resp);
+    }
+
+    private void showEditForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        int id = Integer.parseInt(req.getParameter("id"));
+        Student student = studentDao.getStudentById(id);
+        req.setAttribute("student",student);
+        req.getRequestDispatcher("student-form.jsp").forward(req,resp);
+    }
+
+    private void insertStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String mobile = req.getParameter("mobile");
+
+        studentDao.insert(new Student(name.trim(),email.trim(),mobile.trim()));
+        resp.sendRedirect("student?action=list&success=Inserted Successfully!");
+    }
+
+    private void updateStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String mobile = req.getParameter("mobile");
+
+        studentDao.update(new Student(id,name.trim(),email.trim(),mobile.trim()));
+        resp.sendRedirect("student?action=list&success=Updated Successfully!");
     }
 }
