@@ -19,6 +19,16 @@
 <body>
 
 <div class="container table-container">
+
+    <%
+        int totalPages = (int)request.getAttribute("totalPages");
+        int currentPage = (int)request.getAttribute("currentPage");
+        int pageSize = (int)request.getAttribute("pageSize");
+        int totalRecords = (int)request.getAttribute("totalRecords");
+        int start = ((currentPage-1)*pageSize)+1;
+        int end = Math.min(start + pageSize-1,totalRecords);
+    %>
+
     <div class="card">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
             <div>
@@ -100,8 +110,52 @@
             Servlet + JSP + JDBC MVC Architecture
         </div>
     </div>
-</div>
 
+    <div class="d-flex align-items-center justify-content-between mt-5">
+        <div class="text-muted">
+            Showing
+            <strong><%=start%><i class="fa-solid fa-arrow-right"></i><%=end%></strong>
+            of
+            <strong><%=totalRecords%></strong>
+        </div>
+
+        <form action="student" class="d-flex align-items-center">
+            <span class="text-muted me-2">Show</span>
+            <select name="pageSize" onChange="this.form.submit()">
+                <option <%=(pageSize==5) ? "selected" : ""%> value="5">5</option>
+                <option <%=(pageSize==10) ? "selected" : ""%> value="10">10</option>
+                <option <%=(pageSize==20) ? "selected" : ""%> value="20">20</option>
+                <option <%=(pageSize==50) ? "selected" : ""%> value="50">50</option>
+                <option <%=(pageSize==100) ? "selected" : ""%> value="100">100</option>
+                <option <%=(pageSize==200) ? "selected" : ""%> value="200">200</option>
+            </select>
+            <span class="text-muted mx-2">entries</span>
+        </form>
+
+        <form action="student" method="get" class="d-flex align-items-center">
+            <span class="text-muted me-2">Go</span>
+            <input type="hidden" name="pageSize" value="<%=pageSize%>">
+            <input type="number" name="page" min=1 max=<%=totalPages%> style="width:75px;">
+            <button class="btn btn-primary btn-sm ms-2">Go</button>
+        </form>
+    </div>
+
+    <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center mt-5">
+
+                <li class="page-item"><a class="page-link" href="student?page=1&pageSize=<%=pageSize%>"><i class="fa-solid fa-backward-fast"></i></a></li>
+                <li class="page-item <%=(currentPage==1) ? "disabled" : ""%>"><a class="page-link" href="student?page=<%=(currentPage-1)%>&pageSize=<%=pageSize%>"><i class="fa-solid fa-angle-left"></i></a></li>
+                <% for(int i=1;i<=totalPages;i++){ %>
+                    <li class="page-item <%= (currentPage==i) ? "active" : "" %>">
+                        <a class="page-link" href="student?page=<%=i%>&pageSize=<%=pageSize%>"><%=i%></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%=(currentPage==totalPages) ? "disabled" : ""%>"><a class="page-link" href="student?page=<%=(currentPage+1)%>&pageSize=<%=pageSize%>"><i class="fa-solid fa-angle-right"></i></a></li>
+                <li class="page-item"><a class="page-link" href="student?page=<%=totalPages%>&pageSize=<%=pageSize%>"><i class="fa-solid fa-forward-fast"></i></a></li>
+
+              </ul>
+    </nav>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

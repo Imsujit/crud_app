@@ -1,12 +1,14 @@
 package com.nsgacademy.crudapp.dao;
 
 import com.nsgacademy.crudapp.exception.DAOException;
+import com.nsgacademy.crudapp.model.Pagination;
 import com.nsgacademy.crudapp.model.Student;
 import com.nsgacademy.crudapp.utils.JDBCUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,10 @@ public class StudentDAOImpl implements StudentDAO {
     private static final String DELETE_SQL = "DELETE FROM student WHERE id = ?";
     private static final String UPDATE_SQL = "UPDATE student SET name=? ,email=?, mobile=? WHERE id=?";
     private static final String GET_STUDENT_SQL = "SELECT * FROM student WHERE id=?";
-    private static final String GET_ALL_STUDENT_SQL = "SELECT * FROM student ORDER BY id";
+//    private static final String GET_ALL_STUDENT_SQL = "SELECT * FROM student ORDER BY id";
+    private static final String GET_BASE_SQL = "SELECT id,name,email,mobile FROM student";
+    private static final String PAGINATION_SQL = " LIMIT ? OFFSET ?";
+    private static final String COUNT_SQL = "SELECT COUNT(*) FROM student";
 
     @Override
     public void insert(Student student) {
@@ -76,18 +81,42 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public List<Student> getAllStudents() {
+    public List<Student> getSelectedStudent(Pagination pagination) {
         List<Student> list = new ArrayList<>();
+
+        String sql = GET_BASE_SQL + PAGINATION_SQL;
+
         try(Connection con = JDBCUtils.fetchConnection();
-            PreparedStatement psgetallstudent = con.prepareStatement(GET_ALL_STUDENT_SQL)){
-            try(ResultSet rs = psgetallstudent.executeQuery()){
+            PreparedStatement stmt = con.prepareStatement(sql)){
+
+            stmt.setInt(1,pagination.getPageSize());  // select * from student limit ? offset ?;
+            stmt.setInt(2,pagination.getOffset());
+
+            try(ResultSet rs = stmt.executeQuery()){
                 while(rs.next()){
                     list.add(new Student(rs.getInt("id"),rs.getString("name"),rs.getString("email"),rs.getString("mobile")));
                 }
             }
+
         }catch(Exception e){
             throw new DAOException("Error during fetching all students: "+e.getMessage(),e);
         }
         return list;
+    }
+
+    @Override
+    public int countStudents() {
+        try(Connection con = JDBCUtils.fetchConnection();
+            PreparedStatement stmt = con.prepareStatement(COUNT_SQL);
+            ResultSet rs = stmt.executeQuery()){
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        }catch(SQLException sql){
+            throw new DAOException("Error during counting students"+sql.getMessage());
+        }
+        return 0;
     }
 }

@@ -3,6 +3,7 @@ package com.nsgacademy.crudapp.controller;
 import com.nsgacademy.crudapp.dao.StudentDAO;
 import com.nsgacademy.crudapp.dao.StudentDAOImpl;
 import com.nsgacademy.crudapp.exception.DAOException;
+import com.nsgacademy.crudapp.model.Pagination;
 import com.nsgacademy.crudapp.model.Student;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,7 +44,7 @@ public class StudentServlet extends HttpServlet {
                     break;
                 case "update": updateStudent(req,resp);
                     break;
-                default: getStudentsList(req,resp);
+                default: getListStudent(req,resp);
             }
         }catch (DAOException e){
             req.setAttribute("errorMessage",e.getMessage());
@@ -53,8 +54,32 @@ public class StudentServlet extends HttpServlet {
         }
     }
 
-    private void getStudentsList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-        List<Student> studentsList = studentDao.getAllStudents();
+    private void getListStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        int page = 1; // default page no, if someone directly come through url,it will display page=1
+        int pageSize = 5; // default pageSize
+
+        if(req.getParameter("page")!=null)
+            page = Integer.parseInt(req.getParameter("page"));
+
+        if(req.getParameter("pageSize")!=null)
+            pageSize = Integer.parseInt(req.getParameter("pageSize"));
+
+        int totalRecords = studentDao.countStudents();
+        int totalPages = (int)Math.ceil((double)totalRecords/pageSize);
+
+        if(page<1)
+            page = 1;
+        if(page>totalPages)
+            page = totalPages;
+
+        Pagination pagination = new Pagination(page,pageSize);
+
+        req.setAttribute("totalPages",totalPages);
+        req.setAttribute("currentPage",page);
+        req.setAttribute("pageSize",pageSize);
+        req.setAttribute("totalRecords",totalRecords);
+
+        List<Student> studentsList = studentDao.getSelectedStudent(pagination);
         req.setAttribute("students",studentsList);
         req.getRequestDispatcher("student-list.jsp").forward(req,resp);
     }
