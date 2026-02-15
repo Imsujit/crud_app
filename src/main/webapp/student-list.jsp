@@ -26,7 +26,6 @@
 <div class="container table-container">
 
     <%
-        // Logic remains exactly as you provided
         int totalPages = (int)request.getAttribute("totalPages");
         int currentPage = (int)request.getAttribute("currentPage");
         int pageSize = (int)request.getAttribute("pageSize");
