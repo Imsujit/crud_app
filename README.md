@@ -14,11 +14,11 @@ This project demonstrates a professional backend structure with proper MVC layer
 
 GitHub Repository: **https://github.com/Imsujit/crud_app**
 
-> **Current Stable Release:** `v1.1-pagination`
+> **Current Stable Release:** `v1.1.1-pagination`
 
 ---
 
-## ✨ Features (Current Version – v1.1 Pagination)
+## ✨ Features (Current Version – v1.1.1 Pagination)
 
 - **Core CRUD Operations**
     - Add Student
@@ -73,7 +73,7 @@ GitHub Repository: **https://github.com/Imsujit/crud_app**
 ## 📁 Project Structure
 
 ```
-crudapp/
+crud_app/
 │
 ├── src/main/java
 │   └── com/nsgacademy/crudapp
@@ -183,7 +183,7 @@ git clone https://github.com/Imsujit/crud_app.git
 
 ### 3️⃣ Create Database
 ```sql
-CREATE DATABASE cruddb;
+CREATE DATABASE crudapp;
 ```
 
 Create table using the schema provided above.
@@ -211,21 +211,21 @@ http://localhost:8080/<context-root>/student
 
 This project follows **incremental, tagged releases** to ensure stability.
 
-| Version | Features |
-|------|--------|
-| v1.0-crud | Core CRUD (current stable) |
-| v1.1-pagination | Pagination |
-| v1.2-search | Search |
-| v1.3-sorting | Sorting |
+| Version              | Features |
+|----------------------|--------|
+| v1.0-crud            | Core CRUD |
+| v1.1.1-pagination    | Pagination(current stable) |
+| v1.2-search          | Search |
+| v1.3-sorting         | Sorting |
 | v1.4-advanced-fields | Gender, DOB, Age Calculation |
-| v1.5-file-upload | Student Photo Upload |
-| v1.6-import | Import (CSV / Excel) |
-| v1.7-export | Export (CSV, Excel, PDF, HTML) |
-| v1.8-auth | Login System & Roles |
-| v1.9-audit | Audit Logs |
-| v2.0-deployment | Deployment Configuration |
-| v3.0-hibernate | Hibernate Migration |
-| v4.0-jpa | JPA Migration |
+| v1.5-file-upload     | Student Photo Upload |
+| v1.6-import          | Import (CSV / Excel) |
+| v1.7-export          | Export (CSV, Excel, PDF, HTML) |
+| v1.8-auth            | Login System & Roles |
+| v1.9-audit           | Audit Logs |
+| v2.0-deployment      | Deployment Configuration |
+| v3.0-hibernate       | Hibernate Migration |
+| v4.0-jpa             | JPA Migration |
 
 Each version will be **independently stable and tagged**.
 
