@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@WebServlet(urlPatterns = {"/","/student"})
+@WebServlet(urlPatterns = {"/student"})
 public class StudentServlet extends HttpServlet {
     private StudentDAO studentDao;
     @Override

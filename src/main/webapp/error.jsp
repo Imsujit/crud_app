@@ -29,6 +29,7 @@
 <body>
 
 <div class="container error-container text-center">
+<jsp:include page="header.jsp" />
     <div class="card p-5">
         <div class="card-body">
             <div class="error-icon">

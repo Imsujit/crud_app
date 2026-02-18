@@ -34,6 +34,8 @@
         int end = Math.min(start + pageSize-1, totalRecords);
     %>
 
+    <jsp:include page="header.jsp" />
+
     <div class="card">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
             <div>
