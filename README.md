@@ -14,11 +14,11 @@ This project demonstrates a professional backend structure with proper MVC layer
 
 GitHub Repository: **https://github.com/Imsujit/crud_app**
 
-> **Current Stable Release:** `v1.1.1-pagination`
+> **Current Stable Release:** `v1.2-auth`
 
 ---
 
-## ✨ Features (Current Version – v1.1.1 Pagination)
+## ✨ Features (Current Version – v1.2 Authentication)
 
 - **Core CRUD Operations**
     - Add Student
@@ -31,6 +31,13 @@ GitHub Repository: **https://github.com/Imsujit/crud_app**
     - Page size selection
     - Go-to-page option
     - Record range indicator
+
+- **User Authentication**
+    - User Registration
+    - User Login / Logout
+    - Session-based Authentication
+    - Filter-based Route Protection (`UserFilter`)
+    - Shared Header Component (`header.jsp`)
 
 - **Validation**
     - Client-side validation using HTML5
@@ -79,29 +86,40 @@ crud_app/
 │   └── com/nsgacademy/crudapp
 │       ├── model                # Domain & request models
 │       │   ├── Student.java
+│       │   ├── User.java
 │       │   └── Pagination.java
 │       │
 │       ├── dao                  # Data Access Layer (JDBC)
 │       │   ├── StudentDAO.java
-│       │   └── StudentDAOImpl.java
+│       │   ├── StudentDAOImpl.java
+│       │   ├── UserDAO.java
+│       │   └── UserDAOImpl.java
 │       │
 │       ├── exception            # Centralized exception handling
 │       │   └── DAOException.java
 │       │
+│       ├── filter               # Servlet Filters
+│       │   └── UserFilter.java
+│       │
 │       ├── utils                # Utility & Infrastructure classes
 │       │   └── JDBCUtils.java
 │       │
-│       └── controller                  # Controller layer (Servlets)
-│           └── StudentServlet.java
+│       └── controller           # Controller layer (Servlets)
+│           ├── StudentServlet.java
+│           └── UserServlet.java
 │
 ├── src/main/webapp               # View Layer (JSP)
 │   ├── student-list.jsp
 │   ├── student-form.jsp
+│   ├── register.jsp
+│   ├── login.jsp
+│   ├── header.jsp
 │   └── error.jsp
 │
 ├── screenshots                   # Versioned UI screenshots
 │   ├── v1.0
-│   └── v1.1
+│   ├── v1.1
+│   └── v1.2
 │
 ├── pom.xml
 └── README.md
@@ -114,11 +132,14 @@ crud_app/
 This application follows the **classic MVC (Model–View–Controller) architecture**.
 
 - **Model**
-    - Represents application data (`Student`)
+    - Represents application data (`Student`, `User`)
 
 - **DAO Layer**
     - Contains all SQL queries
     - Handles database interaction only
+
+- **Filter Layer**
+    - `UserFilter` intercepts requests and enforces authentication
 
 - **Controller (Servlet)**
     - Routes HTTP requests
@@ -145,6 +166,13 @@ CREATE TABLE student (
     name   VARCHAR(50) NOT NULL,
     email  VARCHAR(100) NOT NULL,
     mobile VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE users (
+    id       SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email    VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
 );
 ```
 
@@ -186,7 +214,7 @@ git clone https://github.com/Imsujit/crud_app.git
 CREATE DATABASE crudapp;
 ```
 
-Create table using the schema provided above.
+Create tables using the schema provided above.
 
 ---
 
@@ -202,7 +230,7 @@ Create table using the schema provided above.
 - Access application at:
 
 ```
-http://localhost:8080/<context-root>/student
+http://localhost:8080/<context-root>/login
 ```
 
 ---
@@ -214,14 +242,14 @@ This project follows **incremental, tagged releases** to ensure stability.
 | Version              | Features |
 |----------------------|--------|
 | v1.0-crud            | Core CRUD |
-| v1.1.1-pagination    | Pagination(current stable) |
-| v1.2-search          | Search |
-| v1.3-sorting         | Sorting |
-| v1.4-advanced-fields | Gender, DOB, Age Calculation |
-| v1.5-file-upload     | Student Photo Upload |
-| v1.6-import          | Import (CSV / Excel) |
-| v1.7-export          | Export (CSV, Excel, PDF, HTML) |
-| v1.8-auth            | Login System & Roles |
+| v1.1.1-pagination    | Pagination |
+| v1.2-auth            | User Authentication (current stable) |
+| v1.3-search          | Search |
+| v1.4-sorting         | Sorting |
+| v1.5-advanced-fields | Gender, DOB, Age Calculation |
+| v1.6-file-upload     | Student Photo Upload |
+| v1.7-import          | Import (CSV / Excel) |
+| v1.8-export          | Export (CSV, Excel, PDF, HTML) |
 | v1.9-audit           | Audit Logs |
 | v2.0-deployment      | Deployment Configuration |
 | v3.0-hibernate       | Hibernate Migration |
@@ -241,6 +269,7 @@ Planned transitions:
 - JSP → REST APIs + Frontend (React / Thymeleaf)
 - Manual pagination → `Pageable`
 - Manual filters → Specification / Criteria-based filtering
+- Session Auth → Spring Security
 
 ---
 
@@ -249,7 +278,7 @@ Planned transitions:
 - No Service layer (kept simple for Servlet MVC)
 - No ORM in early versions (JDBC used for clarity)
 - No REST APIs yet
-- Authentication not included in early versions
+- Passwords stored as plain text in early versions (encryption planned)
 
 ---
 
@@ -277,6 +306,19 @@ Planned transitions:
 |-----------------------|------------|
 | Pagination Toolbar    | ![Toolbar](screenshots/v1.1/pagination-toolbar.png) |
 | Pagination Navigation | ![Pagination](screenshots/v1.1/pagination-navigation.png) |
+
+---
+
+### v1.2 – Authentication
+
+| Feature                  | Screenshot |
+|--------------------------|------------|
+| Register Page            | ![Register](screenshots/v1.2/register-page.png) |
+| Login Page               | ![Login](screenshots/v1.2/login-page.png) |
+| Register Success         | ![Register Success](screenshots/v1.2/register-success-page.png) |
+| Invalid Register         | ![Invalid Register](screenshots/v1.2/invalid-register-page.png) |
+| Invalid Login            | ![Invalid Login](screenshots/v1.2/invalid-login-page.png) |
+| Authentication Protected | ![Auth Protected](screenshots/v1.2/authentication-page.png) |
 
 ---
 
